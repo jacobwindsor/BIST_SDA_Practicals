@@ -9,11 +9,8 @@ from sample_from_simulated import sample_from_simulated
 data = pd.read_table(Path.cwd() / "Practical1/spider_web.txt", sep=' ')
 
 def binomial(column, sampleSize = 100, numSamples = 1000):
-    mean = np.mean(data[column])
-    std = np.std(data[column])
-
     np.random.seed(10)
-    distribution = np.random.normal(size=sampleSize, loc=mean, scale=std)
+    distribution = np.random.binomial(1000, 0.5, sampleSize)
 
     sample_from_simulated(distribution, sampleSize, numSamples)
 
