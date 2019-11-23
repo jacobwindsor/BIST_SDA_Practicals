@@ -20,7 +20,7 @@ def experiment():
         sample["index"] = idx # Bit of a hack to get the head looking good for ols
         sample["data"] = np.random.normal(loc=16, scale=24, size=20)
         sample["mean"] = np.mean(sample["data"])
-        sample["variance"] = np.std(sample["data"])
+        sample["variance"] = np.var(sample["data"])
 
     # Convert to DF
     samples = pd.DataFrame(samples)
@@ -45,8 +45,3 @@ plt.hist(np.fromiter(fvalues, dtype=float))
 plt.show()
 
 print("Note that distribution is very uniform since numpy.random has been seeded. \n")
-
-"""Excercise 2
-Zinc contamination
-"""
-
