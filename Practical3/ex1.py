@@ -31,3 +31,4 @@ resid2 = calc_residuals("egg_rate", "size")
 
 correlation = pearsonr(resid1, resid2)
 print(f"Correlation between residuals: {correlation}")
+print("The above value indicates the probability ")
