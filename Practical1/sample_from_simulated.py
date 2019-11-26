@@ -17,14 +17,14 @@ def _doSampling(dat, numSamples, sampleSize):
         yield np.mean(get_sample)
 
 
-def sample_from_simulated(distribution, sampleSize = 100, numSamples = 1000, showGraph = True):    
+def sample_from_simulated(distribution, sampleSize = 100, numSamples = 1000, showGraph = True, prefix=""):    
     print(f"number of samples = {numSamples}, sample size = {sampleSize}")
     print(f"===================================================== \n")
 
     samples = np.fromiter(_doSampling(distribution, sampleSize, numSamples), dtype=float)
 
     plt.hist(np.fromiter(samples, dtype=float))
-    showGraph and plt.show()
+    showGraph and plt.savefig(Path.cwd() / f"Practical1/graphs/{prefix}_hist_sampleSize{sampleSize}_numSamples{numSamples}.png")
 
     sample_mean = np.mean(samples)
     pop_mean = np.mean(distribution)

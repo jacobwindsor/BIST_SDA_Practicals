@@ -1,0 +1,52 @@
+Performing simulated uniform sampling.
+======================================================
+
+
+number of samples = 1000, sample size = 100
+===================================================== 
+
+The mean of the population is 4.368139120077659 and the mean of the sampling distribution of the mean is 4.367447605406357. They are similiar.
+The std of the population is 2.4747893318776253 and the std of the sampling distribution of the mean is 0.06867074213907605. They are similiar.
+The estimated std of the population is 0.07825971017819644. So, the CLT does estimate the sample standard deviation.
+
+
+number of samples = 10, sample size = 100
+===================================================== 
+
+The mean of the population is 4.368139120077659 and the mean of the sampling distribution of the mean is 4.413177512272377. They are similiar.
+The std of the population is 2.4747893318776253 and the std of the sampling distribution of the mean is 0.7447020635792081. They are similiar.
+The estimated std of the population is 0.7825971017819643. So, the CLT does estimate the sample standard deviation.
+
+
+number of samples = 100, sample size = 100
+===================================================== 
+
+The mean of the population is 4.368139120077659 and the mean of the sampling distribution of the mean is 4.407118822941545. They are similiar.
+The std of the population is 2.4747893318776253 and the std of the sampling distribution of the mean is 0.23321174815478812. They are similiar.
+The estimated std of the population is 0.24747893318776254. So, the CLT does estimate the sample standard deviation.
+
+
+number of samples = 1000, sample size = 3
+===================================================== 
+
+The mean of the population is 4.2771624826572685 and the mean of the sampling distribution of the mean is 4.26237341718008. They are similiar.
+The std of the population is 2.9362459396963705 and the std of the sampling distribution of the mean is 0.04971967465653465. They are similiar.
+The estimated std of the population is 0.09285224939861943. So, the CLT does estimate the sample standard deviation.
+
+
+number of samples = 1000, sample size = 10
+===================================================== 
+
+The mean of the population is 3.7024853360576406 and the mean of the sampling distribution of the mean is 3.744565806242656. They are similiar.
+The std of the population is 2.574487367623927 and the std of the sampling distribution of the mean is 0.030818211330529404. They are similiar.
+The estimated std of the population is 0.08141243889022842. So, the CLT does estimate the sample standard deviation.
+
+
+number of samples = 1000, sample size = 50
+===================================================== 
+
+The mean of the population is 4.516457913399573 and the mean of the sampling distribution of the mean is 4.513502661396559. They are similiar.
+The std of the population is 2.4669922800506283 and the std of the sampling distribution of the mean is 0.07067587936566191. They are similiar.
+The estimated std of the population is 0.07801314575011957. So, the CLT does estimate the sample standard deviation.
+
+

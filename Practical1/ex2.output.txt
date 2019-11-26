@@ -1,0 +1,28 @@
+Performing simulated binomial sampling.
+======================================================
+
+
+number of samples = 1000, sample size = 100
+===================================================== 
+
+The mean of the population is 500.59 and the mean of the sampling distribution of the mean is 500.52718. They are similiar.
+The std of the population is 14.492132348277808 and the std of the sampling distribution of the mean is 0.4474437479728617. They are not similiar.
+The estimated std of the population is 0.45828146373162426. So, the CLT does estimate the sample standard deviation.
+
+
+number of samples = 10, sample size = 3
+===================================================== 
+
+The mean of the population is 502.6666666666667 and the mean of the sampling distribution of the mean is 503.0333333333333. They are similiar.
+The std of the population is 11.953614051360738 and the std of the sampling distribution of the mean is 3.439315177312038. They are not similiar.
+The estimated std of the population is 3.7800646672892895. So, the CLT does estimate the sample standard deviation.
+
+
+number of samples = 50, sample size = 10
+===================================================== 
+
+The mean of the population is 497.2 and the mean of the sampling distribution of the mean is 496.912. They are similiar.
+The std of the population is 14.323407415835103 and the std of the sampling distribution of the mean is 1.8057065099290144. They are not similiar.
+The estimated std of the population is 2.025635702686937. So, the CLT does estimate the sample standard deviation.
+
+

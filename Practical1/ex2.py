@@ -10,7 +10,7 @@ def binomial(sampleSize = 100, numSamples = 1000):
     np.random.seed(10)
     distribution = np.random.binomial(1000, 0.5, sampleSize)
 
-    sample_from_simulated(distribution, sampleSize, numSamples)
+    sample_from_simulated(distribution, sampleSize, numSamples, True, "binomial")
 
 print(f"Performing simulated binomial sampling.")
 print("======================================================\n\n")

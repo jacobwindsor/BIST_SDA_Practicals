@@ -13,7 +13,7 @@ def uniform(sampleSize = 100, numSamples = 1000):
     np.random.seed(10)
     distribution = np.random.uniform(low=0, high=9, size=sampleSize)
 
-    sample_from_simulated(distribution, sampleSize, numSamples)
+    sample_from_simulated(distribution, sampleSize, numSamples, True, "uniform")
 
 print(f"Performing simulated uniform sampling.")
 print("======================================================\n\n")

@@ -1,0 +1,2 @@
+The test statistic for web width is 2.1405166251313874 with a pvalue of 0.04003367486004684.
+The test statistic for web height is 0.8887858861631696 with a pvalue of 0.38075080527784877.
