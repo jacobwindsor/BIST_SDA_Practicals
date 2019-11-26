@@ -1,0 +1,14 @@
+See graphs/ex4_boxplot_eggs_density.png
+See graphs/ex4_boxplot_eggs_season.png
+See graphs/ex4_boxplot_eggs_density_season.png
+Performing two way ANOVA
+                  df     sum_sq    mean_sq           F        PR(>F)
+DENSITY          2.0   4.001910   2.000955   13.984179  7.324696e-04
+SEASON           1.0  17.148320  17.148320  119.845363  1.335587e-07
+DENSITY:SEASON   2.0   1.690723   0.845362    5.908024  1.636324e-02
+Residual        12.0   1.717045   0.143087         NaN           NaN
+Both the density and season affect the eggs and there IS an interaction between the two factors.
+Creating interaction plot
+See graphs/ex4_interaction_plot.png
+More eggs are laid during spring
+Lines are not parallel so an interaction occurs.

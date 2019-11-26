@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 from pathlib import Path
 from statsmodels.stats.multicomp import MultiComparison
 from statsmodels.sandbox.stats.multicomp import tukeyhsd
+from pathlib import Path
 
 """Excercise 2
 Zinc contamination
@@ -18,7 +19,8 @@ print(data.head())
 
 # Make box plot
 data.boxplot(column="DIVERSITY", by="ZINC")
-plt.show()
+print("See boxplot in graphs folder")
+plt.savefig(Path.cwd() / "Practical2/graphs/boxplot_ex2.png")
 
 # h0 = group means are all equal
 mod = ols("DIVERSITY ~ ZINC", data=data).fit()

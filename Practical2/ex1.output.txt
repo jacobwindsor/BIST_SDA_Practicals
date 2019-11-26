@@ -1,0 +1,11 @@
+Performing ANOVA for one repeat of experiment 
+
+           df    sum_sq   mean_sq         F    PR(>F)
+index     1.0  6.559876  6.559876  1.419297  0.355729
+Residual  2.0  9.243836  4.621918       NaN       NaN
+MSW and MSB are similiar but both are far from the variance of 24 given to the normal distribution. 
+
+Performing ANOVA for 1000 repeats of experiment 
+
+Note that distribution is very uniform since numpy.random has been seeded. 
+

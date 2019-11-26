@@ -5,6 +5,7 @@ from statsmodels.formula.api import ols
 from scipy import stats
 import numpy as np
 import matplotlib.pyplot as plt
+from pathlib import Path
 
 np.random.seed(10)
 
@@ -42,6 +43,6 @@ for x in range(0, 999):
     fvalues.append(anova["F"]["index"])
 
 plt.hist(np.fromiter(fvalues, dtype=float))
-plt.show()
+plt.savefig(Path.cwd() / "Practical2/graphs/hist_ex1.png")
 
 print("Note that distribution is very uniform since numpy.random has been seeded. \n")

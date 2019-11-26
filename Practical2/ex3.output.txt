@@ -1,0 +1,6 @@
+              ci95_hi   ci95_lo
+                               
+fertilizer                     
+fertilizer1  6.049919  4.840081
+fertilizer2  4.601297  3.396703
+fertilizer3  5.091134  3.882866

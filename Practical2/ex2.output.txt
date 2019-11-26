@@ -1,0 +1,25 @@
+  STREAM  ZINC  DIVERSITY
+0  Eagle  BACK       2.27
+1  Eagle  HIGH       1.25
+2  Eagle  HIGH       1.15
+3  Eagle   MED       1.62
+4   Blue  BACK       1.70
+See boxplot in graphs folder
+ANOVA TABLE for diversity versus zinc level groups
+            df    sum_sq   mean_sq        F   PR(>F)
+ZINC       3.0  2.566612  0.855537  3.93869  0.01756
+Residual  30.0  6.516411  0.217214      NaN      NaN
+P is below alpha of 0.05. So reject null hypothesis. The means are not equal.
+Performing post hoc test...
+Multiple Comparison of Means - Tukey HSD, FWER=0.05
+===================================================
+group1 group2 meandiff p-adj   lower  upper  reject
+---------------------------------------------------
+  BACK   HIGH  -0.5197 0.1221 -1.1355  0.096  False
+  BACK    LOW    0.235 0.7239 -0.3986 0.8686  False
+  BACK    MED  -0.0797    0.9 -0.6955  0.536  False
+  HIGH    LOW   0.7547 0.0117   0.139 1.3705   True
+  HIGH    MED     0.44 0.2096 -0.1574 1.0374  False
+   LOW    MED  -0.3147 0.5139 -0.9305  0.301  False
+---------------------------------------------------
+Can conclude that group2 with LOW zinc contamination is the group with a significantly different mean

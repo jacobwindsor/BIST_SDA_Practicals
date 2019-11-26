@@ -30,10 +30,16 @@ df["DENSITY"] = df["DENSITY"].astype(object)
 
 # Look at dispesion of eggs of each factor
 df.boxplot(column="EGGS", by="DENSITY")
+print("See graphs/ex4_boxplot_eggs_density.png")
+plt.savefig(Path.cwd() / "Practical2/graphs/ex4_boxplot_eggs_density.png")
 df.boxplot(column="EGGS", by="SEASON")
+print("See graphs/ex4_boxplot_eggs_season.png")
+plt.savefig(Path.cwd() / "Practical2/graphs/ex4_boxplot_eggs_season.png")
 
 # And together
 df.boxplot(column="EGGS", by=["DENSITY", "SEASON"])
+print("See graphs/ex4_boxplot_eggs_density_season.png")
+plt.savefig(Path.cwd() / "Practical2/graphs/ex4_boxplot_eggs_density_season.png")
 
 # Perform two way ANOVA
 print("Performing two way ANOVA")
@@ -44,7 +50,8 @@ print("Both the density and season affect the eggs and there IS an interaction b
 # Create interaction plot
 print("Creating interaction plot")
 interaction_plot(df['DENSITY'], df['SEASON'], df['EGGS'])
-plt.show()
+print("See graphs/ex4_interaction_plot.png")
+plt.savefig(Path.cwd() / "Practical2/graphs/ex4_interaction_plot.png")
 
 print("More eggs are laid during spring")
 print("Lines are not parallel so an interaction occurs.")
