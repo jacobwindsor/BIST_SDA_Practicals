@@ -31,4 +31,5 @@ resid2 = calc_residuals("egg_rate", "size")
 
 correlation = pearsonr(resid1, resid2)
 print(f"Correlation between residuals: {correlation}")
-print("The above value indicates the probability ")
+print("The above value indicates the partial correlation between the effect of longevity on size and the effect of egg_rate on size.")
+print("Given that the p value is two tailed. The p value for the lower tail is large so there is a low probability that the two are negatively partially correlated. However, there is a high probability that they are positively partially correlated.")
