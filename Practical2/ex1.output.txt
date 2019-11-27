@@ -1,11 +1,22 @@
 Performing ANOVA for one repeat of experiment 
 
-           df    sum_sq   mean_sq         F    PR(>F)
-index     1.0  6.559876  6.559876  1.419297  0.355729
-Residual  2.0  9.243836  4.621918       NaN       NaN
-MSW and MSB are similiar but both are far from the variance of 24 given to the normal distribution. 
+            df      sum_sq    mean_sq         F    PR(>F)
+index      3.0    13.16976   4.389920  0.212692  0.887318
+Residual  76.0  1568.62368  20.639785       NaN       NaN
+
+
+Mean for sample 1 is 164.58160429173273 and the variance is 16.754929868230096
+Mean for sample 2 is 165.10125605686122 and the variance is 27.51536000901266
+Mean for sample 3 is 164.62928553522403 and the variance is 13.134380024925658
+Mean for sample 4 is 163.95957171053294 and the variance is 21.026514082996627
+Given the p value. Sample means are likely not statistically different. 
+
+MSB and MSW are not similiar. Neither are good estimates of the variance of the normal distribution. Although, MSW is closer to 24. 
 
 Performing ANOVA for 1000 repeats of experiment 
 
-Note that distribution is very uniform since numpy.random has been seeded. 
+See /home/jacob/projects/BIST_SDA_Practicals/Practical2/graphs/fdist_ex1.png for output f distribution 
 
+Using this distribution, given alpha of 0.5, the Fc would be approximately 3.5-4
+For a theoretical T distribution with the same degrees of freedom, 97.047% of F values lie to the left of 3.5.
+Therefore, the given Fc value of 3.5-4.0 is quite accurate.
