@@ -1,0 +1,8 @@
+Pairwise correlation between longv and size: (0.8283311342065418, 3.1849171441815143e-07)
+Pairwise correlation between longv and egg_rate: (0.449849448135042, 0.024054320056476213)
+Pairwise correlation between size and egg_rate: (0.7704626852133368, 6.6250867952798715e-06)
+Calculating residuals between longv and size
+Calculating residuals between egg_rate and size
+Correlation between residuals: (-0.5273750528566099, 0.00674732634080353)
+The above value indicates the partial correlation between the effect of longevity on size and the effect of egg_rate on size.
+Given that the p value is two tailed. The p value for the lower tail is large so there is a low probability that the two are negatively partially correlated. However, there is a high probability that they are positively partially correlated.

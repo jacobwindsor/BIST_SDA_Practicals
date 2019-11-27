@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Statistics Practicals</title>
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+        
+        <style>
+.task-list-item { list-style-type: none; } .task-list-item-checkbox { margin-left: -20px; vertical-align: middle; }
+</style>
+        <style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        
+        
+    </head>
+    <body class="vscode-light">
+        <h1 id="statistics-practicals">Statistics Practicals</h1>
+<p>This file is a compilation of all the code and output from each excercise. I did NOT do the excercises in anaconda. If you wish to further inspect the code it is available at <a href="https://github.com/jacobwindsor/BIST_SDA_Practicals">https://github.com/jacobwindsor/BIST_SDA_Practicals</a>.</p>
+<h2 id="practical-1">Practical 1</h2>
+<h3 id="excercise-1">Excercise 1</h3>
+<h4 id="code">Code</h4>
+<pre><code class="language-python"><div><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd <span class="hljs-comment"># Read data and work with data frames</span>
+<span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt <span class="hljs-comment"># Boxplot and histogram</span>
+<span class="hljs-keyword">import</span> statsmodels.api <span class="hljs-keyword">as</span> sm <span class="hljs-comment"># QQ plot</span>
+<span class="hljs-keyword">import</span> scipy.stats <span class="hljs-keyword">as</span> stats <span class="hljs-comment"># Basic statistics</span>
+<span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np <span class="hljs-comment"># Scientific computing</span>
+<span class="hljs-keyword">from</span> pathlib <span class="hljs-keyword">import</span> Path
+
+data = pd.read_table(Path.cwd() / <span class="hljs-string">"Practical1/spider_web.txt"</span>, sep=<span class="hljs-string">' '</span>)
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">ttest</span><span class="hljs-params">(keyword, human_readable)</span>:</span>
+    result = stats.ttest_ind(data[keyword + <span class="hljs-string">'DIM'</span>], data[keyword + <span class="hljs-string">'LIG'</span>], equal_var = <span class="hljs-literal">True</span>)
+    print(<span class="hljs-string">f"The test statistic for <span class="hljs-subst">{human_readable}</span> is <span class="hljs-subst">{result.statistic}</span> with a pvalue of <span class="hljs-subst">{result.pvalue}</span>."</span>)
+ 
+ttest(<span class="hljs-string">"HORIZ"</span>, <span class="hljs-string">"web width"</span>)
+ttest(<span class="hljs-string">"VERT"</span>, <span class="hljs-string">"web height"</span>)
+</div></code></pre>
+<h4 id="output">Output</h4>
+<p>The test statistic for web width is 2.1405166251313874 with a pvalue of 0.04003367486004684.</p>
+<p>The test statistic for web height is 0.8887858861631696 with a pvalue of 0.38075080527784877.</p>
+<h3 id="excercise-2">Excercise 2</h3>
+<h4 id="code-1">Code</h4>
+<pre><code class="language-python"><div><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd <span class="hljs-comment"># Read data and work with data frames</span>
+<span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt <span class="hljs-comment"># Boxplot and histogram</span>
+<span class="hljs-keyword">import</span> statsmodels.api <span class="hljs-keyword">as</span> sm <span class="hljs-comment"># QQ plot</span>
+<span class="hljs-keyword">import</span> scipy.stats <span class="hljs-keyword">as</span> stats <span class="hljs-comment"># Basic statistics</span>
+<span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np <span class="hljs-comment"># Scientific computing</span>
+<span class="hljs-keyword">from</span> pathlib <span class="hljs-keyword">import</span> Path
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">sample_from_simulated</span><span class="hljs-params">(distribution, sampleSize = <span class="hljs-number">100</span>, numSamples = <span class="hljs-number">1000</span>, showGraph = True, prefix=<span class="hljs-string">""</span>)</span>:</span>    
+    print(<span class="hljs-string">f"number of samples = <span class="hljs-subst">{numSamples}</span>, sample size = <span class="hljs-subst">{sampleSize}</span>"</span>)
+    print(<span class="hljs-string">f"===================================================== \n"</span>)
+
+    samples = np.fromiter(_doSampling(distribution, sampleSize, numSamples), dtype=float)
+
+    plt.hist(np.fromiter(samples, dtype=float))
+    showGraph <span class="hljs-keyword">and</span> plt.savefig(Path.cwd() / <span class="hljs-string">f"Practical1/graphs/<span class="hljs-subst">{prefix}</span>_hist_sampleSize<span class="hljs-subst">{sampleSize}</span>_numSamples<span class="hljs-subst">{numSamples}</span>.png"</span>)
+
+    sample_mean = np.mean(samples)
+    pop_mean = np.mean(distribution)
+    similiar_text = (<span class="hljs-string">"not "</span>, <span class="hljs-string">""</span>)[abs(pop_mean - sample_mean) &lt; <span class="hljs-number">10</span>]
+    print(<span class="hljs-string">f"The mean of the population is <span class="hljs-subst">{pop_mean}</span> and the mean of the sampling distribution of the mean is <span class="hljs-subst">{sample_mean}</span>. They are <span class="hljs-subst">{similiar_text}</span>similiar."</span>)
+
+    sample_std = np.std(samples)
+    pop_std = np.std(distribution)
+    similiar_std_text = (<span class="hljs-string">"not "</span>, <span class="hljs-string">""</span>)[abs(pop_std - sample_std) &lt; <span class="hljs-number">5</span>]
+    print(<span class="hljs-string">f"The std of the population is <span class="hljs-subst">{pop_std}</span> and the std of the sampling distribution of the mean is <span class="hljs-subst">{sample_std}</span>. They are <span class="hljs-subst">{similiar_std_text}</span>similiar."</span>)
+
+    estimated_std = pop_std / np.sqrt(numSamples)
+    clt_holds_txt = (<span class="hljs-string">"not "</span>, <span class="hljs-string">""</span>)[abs(estimated_std - sample_std) &lt; <span class="hljs-number">1</span>]
+    print(<span class="hljs-string">f"The estimated std of the population is <span class="hljs-subst">{estimated_std}</span>. So, the CLT does <span class="hljs-subst">{clt_holds_txt}</span>estimate the sample standard deviation."</span>)
+
+    print(<span class="hljs-string">"\n"</span>)
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">binomial</span><span class="hljs-params">(sampleSize = <span class="hljs-number">100</span>, numSamples = <span class="hljs-number">1000</span>)</span>:</span>
+    np.random.seed(<span class="hljs-number">10</span>)
+    distribution = np.random.binomial(<span class="hljs-number">1000</span>, <span class="hljs-number">0.5</span>, sampleSize)
+
+    sample_from_simulated(distribution, sampleSize, numSamples, <span class="hljs-literal">True</span>, <span class="hljs-string">"binomial"</span>)
+
+print(<span class="hljs-string">f"Performing simulated binomial sampling."</span>)
+print(<span class="hljs-string">"======================================================\n\n"</span>)
+binomial()
+binomial(<span class="hljs-number">3</span>, <span class="hljs-number">10</span>)
+binomial(<span class="hljs-number">10</span>, <span class="hljs-number">50</span>)
+</div></code></pre>
+<h4 id="output-1">Output</h4>
+<p>Performing simulated binomial sampling.</p>
+<p>number of samples = 1000, sample size = 100</p>
+<p>The mean of the population is 500.59 and the mean of the sampling distribution of the mean is 500.52718.</p>
+<p>They are similiar.</p>
+<p>std of the population is 14.492132348277808 and the std of the sampling distribution of the mean is 0.4474437479728617.</p>
+<p>They are not similiar.</p>
+<p>The estimated std of the population is 0.45828146373162426. So, the CLT does estimate the sample standard deviation.</p>
+<p>number of samples = 10, sample size = 3</p>
+<p>The mean of the population is 502.6666666666667 and the mean of the sampling distribution of the mean is 503.0333333333333.</p>
+<p>They are similiar.</p>
+<p>The std of the population is 11.953614051360738 and the std of the sampling distribution of the mean is 3.439315177312038. They are not similiar.</p>
+<p>The estimated std of the population is 3.7800646672892895. So, the CLT does estimate the sample standard deviation.</p>
+<p>number of samples = 50, sample size = 10</p>
+<p>The mean of the population is 497.2 and the mean of the sampling distribution of the mean is 496.912.</p>
+<p>They are similiar.
+The std of the population is 14.323407415835103 and the std of the sampling distribution of the mean is 1.8057065099290144.</p>
+<p>They are not similiar.</p>
+<p>The estimated std of the population is 2.025635702686937. So, the CLT does estimate the sample standard deviation.</p>
+<h4 id="graphs">Graphs</h4>
+<p>sampleSize = 3 and numSamples = 10
+<img src="file:////home/jacob/projects/BIST_SDA_Practicals/Practical1/graphs/binomial_hist_sampleSize3_numSamples10.png" alt=""></p>
+<p>sampleSize = 10 and numSamples = 50
+<img src="file:////home/jacob/projects/BIST_SDA_Practicals/Practical1/graphs/binomial_hist_sampleSize10_numSamples50.png" alt=""></p>
+<p>sampleSize=199 and numSamples = 1000
+<img src="file:////home/jacob/projects/BIST_SDA_Practicals/Practical1/graphs/binomial_hist_sampleSize100_numSamples1000.png" alt=""></p>
+<h3 id="excercise-3">Excercise 3</h3>
+<h4 id="code-2">Code</h4>
+<pre><code class="language-python"><div><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd <span class="hljs-comment"># Read data and work with data frames</span>
+<span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt <span class="hljs-comment"># Boxplot and histogram</span>
+<span class="hljs-keyword">import</span> statsmodels.api <span class="hljs-keyword">as</span> sm <span class="hljs-comment"># QQ plot</span>
+<span class="hljs-keyword">import</span> scipy.stats <span class="hljs-keyword">as</span> stats <span class="hljs-comment"># Basic statistics</span>
+<span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np <span class="hljs-comment"># Scientific computing</span>
+<span class="hljs-keyword">from</span> pathlib <span class="hljs-keyword">import</span> Path
+
+data = pd.read_table(Path.cwd() / <span class="hljs-string">"Practical1/spider_web.txt"</span>, sep=<span class="hljs-string">' '</span>)
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">uniform</span><span class="hljs-params">(sampleSize = <span class="hljs-number">100</span>, numSamples = <span class="hljs-number">1000</span>)</span>:</span>
+
+    np.random.seed(<span class="hljs-number">10</span>)
+    distribution = np.random.uniform(low=<span class="hljs-number">0</span>, high=<span class="hljs-number">9</span>, size=sampleSize)
+
+    sample_from_simulated(distribution, sampleSize, numSamples, <span class="hljs-literal">True</span>, <span class="hljs-string">"uniform"</span>)
+
+print(<span class="hljs-string">f"Performing simulated uniform sampling."</span>)
+print(<span class="hljs-string">"======================================================\n\n"</span>)
+uniform()
+uniform(<span class="hljs-number">100</span>, <span class="hljs-number">10</span>)
+uniform(<span class="hljs-number">100</span>, <span class="hljs-number">100</span>)
+uniform(<span class="hljs-number">3</span>)
+uniform(<span class="hljs-number">10</span>)
+uniform(<span class="hljs-number">50</span>)
+</div></code></pre>
+<h4 id="output-2">Output</h4>
+<p>Performing simulated uniform sampling.</p>
+<p>number of samples = 1000, sample size = 100</p>
+<p>The mean of the population is 4.368139120077659 and the mean of the sampling distribution of the mean is 4.367447605406357.</p>
+<p>They are similiar.
+The std of the population is 2.4747893318776253 and the std of the sampling distribution of the mean is 0.06867074213907605.</p>
+<p>They are similiar.</p>
+<p>The estimated std of the population is 0.07825971017819644. So, the CLT does estimate the sample standard deviation.</p>
+<p>number of samples = 10, sample size = 100</p>
+<p>The mean of the population is 4.368139120077659 and the mean of the sampling distribution of the mean is 4.413177512272377.</p>
+<p>They are similiar.
+The std of the population is 2.4747893318776253 and the std of the sampling distribution of the mean is 0.7447020635792081.</p>
+<p>They are similiar.</p>
+<p>The estimated std of the population is 0.7825971017819643. So, the CLT does estimate the sample standard deviation.</p>
+<p>number of samples = 100, sample size = 100</p>
+<p>The mean of the population is 4.368139120077659 and the mean of the sampling distribution of the mean is 4.407118822941545.</p>
+<p>They are similiar.</p>
+<p>The std of the population is 2.4747893318776253 and the std of the sampling distribution of the mean is 0.23321174815478812.</p>
+<p>They are similiar.</p>
+<p>The estimated std of the population is 0.24747893318776254. So, the CLT does estimate the sample standard deviation.</p>
+<p>number of samples = 1000, sample size = 3</p>
+<p>The mean of the population is 4.2771624826572685 and the mean of the sampling distribution of the mean is 4.26237341718008.</p>
+<p>They are similiar.</p>
+<p>The std of the population is 2.9362459396963705 and the std of the sampling distribution of the mean is 0.04971967465653465.</p>
+<p>They are similiar.</p>
+<p>The estimated std of the population is 0.09285224939861943. So, the CLT does estimate the sample standard deviation.</p>
+<p>number of samples = 1000, sample size = 10</p>
+<p>The mean of the population is 3.7024853360576406 and the mean of the sampling distribution of the mean is 3.744565806242656.</p>
+<p>They are similiar.</p>
+<p>The std of the population is 2.574487367623927 and the std of the sampling distribution of the mean is 0.030818211330529404.</p>
+<p>They are similiar.</p>
+<p>The estimated std of the population is 0.08141243889022842. So, the CLT does estimate the sample standard deviation.</p>
+<p>number of samples = 1000, sample size = 50</p>
+<p>The mean of the population is 4.516457913399573 and the mean of the sampling distribution of the mean is 4.513502661396559.</p>
+<p>They are similiar.
+The std of the population is 2.4669922800506283 and the std of the sampling distribution of the mean is 0.07067587936566191.</p>
+<p>They are similiar.</p>
+<p>The estimated std of the population is 0.07801314575011957. So, the CLT does estimate the sample standard deviation.</p>
+<h4 id="graphs-1">Graphs</h4>
+<p>sampleSize = 3 numSamples = 100
+<img src="file:////home/jacob/projects/BIST_SDA_Practicals/Practical1/graphs/uniform_hist_sampleSize3_numSamples1000.png" alt=""></p>
+<p>sampleSize = 10 numSamples = 1000
+<img src="file:////home/jacob/projects/BIST_SDA_Practicals/Practical1/graphs/uniform_hist_sampleSize10_numSamples1000.png" alt=""></p>
+<p>sampleSize = 50 numSamples = 1000
+<img src="file:////home/jacob/projects/BIST_SDA_Practicals/Practical1/graphs/uniform_hist_sampleSize50_numSamples1000.png" alt=""></p>
+<p>sampleSize = 100 numSamples = 10
+<img src="file:////home/jacob/projects/BIST_SDA_Practicals/Practical1/graphs/uniform_hist_sampleSize100_numSamples10.png" alt=""></p>
+<p>sampleSize = 100 numSamples = 100
+<img src="file:////home/jacob/projects/BIST_SDA_Practicals/Practical1/graphs/uniform_hist_sampleSize100_numSamples100.png" alt=""></p>
+<p>sampleSize = 100 numSamples = 1000
+<img src="file:////home/jacob/projects/BIST_SDA_Practicals/Practical1/graphs/uniform_hist_sampleSize100_numSamples1000.png" alt=""></p>
+<h2 id="practical-2">Practical 2</h2>
+<h3 id="excercise-1-1">Excercise 1</h3>
+<h4 id="code-3">Code</h4>
+<pre><code class="language-python"><div><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-keyword">import</span> statsmodels <span class="hljs-keyword">as</span> sm
+<span class="hljs-keyword">import</span> statsmodels.api <span class="hljs-keyword">as</span> statsmodels
+<span class="hljs-keyword">from</span> statsmodels.formula.api <span class="hljs-keyword">import</span> ols
+<span class="hljs-keyword">from</span> scipy <span class="hljs-keyword">import</span> stats
+<span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
+<span class="hljs-keyword">from</span> pathlib <span class="hljs-keyword">import</span> Path
+<span class="hljs-keyword">import</span> math
+
+np.random.seed(<span class="hljs-number">10</span>)
+
+<span class="hljs-string">""" Excercise 1
+Normal distribution ANOVA
+"""</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">experiment</span><span class="hljs-params">()</span>:</span>
+    <span class="hljs-comment"># Sample 4 (n=20) samples from normal distribution</span>
+    index_column = []
+    data_column = []
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-number">1</span>,<span class="hljs-number">5</span>):
+        index_column.extend([str(i)] * <span class="hljs-number">20</span>) <span class="hljs-comment"># Convert i to string so is treated as a categorical variable</span>
+        data_column.extend(np.random.normal(loc=<span class="hljs-number">164</span>, scale=math.sqrt(<span class="hljs-number">24</span>), size=<span class="hljs-number">20</span>))
+
+    samples = pd.DataFrame(
+        data={<span class="hljs-string">"index"</span>: index_column, <span class="hljs-string">"data"</span>: data_column}
+    )
+
+    sample_stats = []
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-number">1</span>,<span class="hljs-number">5</span>):
+        sample = samples.loc[samples[<span class="hljs-string">"index"</span>] == str(i)]
+        sample_stats.append({
+            <span class="hljs-string">"sample_label"</span>: str(i),
+            <span class="hljs-string">"mean"</span>: np.mean(sample[<span class="hljs-string">"data"</span>]),
+            <span class="hljs-string">"variance"</span>: np.var(sample[<span class="hljs-string">"data"</span>])
+        })
+
+    <span class="hljs-comment"># Calculate MSbetween and MSwithin</span>
+    mod = ols(<span class="hljs-string">"data ~ index"</span>, data=samples).fit()
+    <span class="hljs-keyword">return</span> { 
+        <span class="hljs-string">"a_tab"</span>: sm.stats.anova.anova_lm(mod),
+        <span class="hljs-string">"sample_stats"</span>: sample_stats
+    }
+
+print(<span class="hljs-string">"Performing ANOVA for one repeat of experiment \n"</span>)
+one_experiment = experiment()
+print(one_experiment[<span class="hljs-string">"a_tab"</span>])
+print(<span class="hljs-string">"\n"</span>)
+
+<span class="hljs-keyword">for</span> sample <span class="hljs-keyword">in</span> one_experiment[<span class="hljs-string">"sample_stats"</span>]:
+    print(<span class="hljs-string">f"Mean for sample <span class="hljs-subst">{sample[<span class="hljs-string">'sample_label'</span>]}</span> is <span class="hljs-subst">{sample[<span class="hljs-string">'mean'</span>]}</span> and the variance is <span class="hljs-subst">{sample[<span class="hljs-string">'variance'</span>]}</span>"</span>)
+
+print(<span class="hljs-string">"Given the p value. Sample means are likely not statistically different. \n"</span>)
+print(<span class="hljs-string">"MSB and MSW are not similiar. Neither are good estimates of the variance of the normal distribution. Although, MSW is closer to 24. \n"</span>)
+
+print(<span class="hljs-string">"Performing ANOVA for 1000 repeats of experiment \n"</span>)
+
+fvalues = []
+<span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> range(<span class="hljs-number">0</span>, <span class="hljs-number">999</span>):
+    anova = experiment()[<span class="hljs-string">"a_tab"</span>]
+    fvalues.append(anova[<span class="hljs-string">"F"</span>][<span class="hljs-string">"index"</span>])
+
+plt.hist(
+    fvalues,
+    density=<span class="hljs-literal">True</span>, <span class="hljs-comment"># plot a density function for probabilities</span>
+    bins=np.arange(min(fvalues), max(fvalues) + <span class="hljs-number">0.3</span>, <span class="hljs-number">0.3</span>)
+)
+plt.xlabel(<span class="hljs-string">"F value"</span>)
+plt.ylabel(<span class="hljs-string">"Probability"</span>)
+fig_path = Path.cwd() / <span class="hljs-string">"Practical2/graphs/fdist_ex1.png"</span>
+print(<span class="hljs-string">f"See <span class="hljs-subst">{fig_path}</span> for output f distribution \n"</span>)
+plt.savefig(fig_path)
+
+print(<span class="hljs-string">"Using this distribution, given alpha of 0.5, the Fc would be approximately 3.5-4"</span>)
+
+cdf = stats.f.cdf(<span class="hljs-number">3.5</span>, dfn=<span class="hljs-number">3</span>, dfd=<span class="hljs-number">26</span>)
+
+print(<span class="hljs-string">f"For a theoretical T distribution with the same degrees of freedom, <span class="hljs-subst">{round(cdf * <span class="hljs-number">100</span>, <span class="hljs-number">3</span>)}</span>% of F values lie to the left of 3.5."</span>)
+print(<span class="hljs-string">"Therefore, the given Fc value of 3.5-4.0 is quite accurate."</span>)
+</div></code></pre>
+<h4 id="output-3">Output</h4>
+<p>Performing ANOVA for one repeat of experiment</p>
+<pre><code>        df      sum_sq    mean_sq         F    PR(&gt;F)
+</code></pre>
+<p>index      3.0    13.16976   4.389920  0.212692  0.887318
+Residual  76.0  1568.62368  20.639785       NaN       NaN</p>
+<p>Mean for sample 1 is 164.58160429173273 and the variance is 16.754929868230096
+Mean for sample 2 is 165.10125605686122 and the variance is 27.51536000901266
+Mean for sample 3 is 164.62928553522403 and the variance is 13.134380024925658
+Mean for sample 4 is 163.95957171053294 and the variance is 21.026514082996627
+Given the p value. Sample means are likely not statistically different.</p>
+<p>MSB and MSW are not similiar. Neither are good estimates of the variance of the normal distribution. Although, MSW is closer to 24.</p>
+<p>Performing ANOVA for 1000 repeats of experiment</p>
+<p>See /home/jacob/projects/BIST_SDA_Practicals/Practical2/graphs/fdist_ex1.png for output f distribution</p>
+<p>Using this distribution, given alpha of 0.5, the Fc would be approximately 3.5-4
+For a theoretical T distribution with the same degrees of freedom, 97.047% of F values lie to the left of 3.5.
+Therefore, the given Fc value of 3.5-4.0 is quite accurate.</p>
+<h4 id="graphs-2">Graphs</h4>
+<p>F distribution
+<img src="file:////home/jacob/projects/BIST_SDA_Practicals/Practical2/graphs/fdist_ex1.png" alt=""></p>
+<h3 id="excercise-2-1">Excercise 2</h3>
+<h4 id="code-4">Code</h4>
+<pre><code class="language-python"><div><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-keyword">import</span> statsmodels <span class="hljs-keyword">as</span> sm
+<span class="hljs-keyword">import</span> statsmodels.api <span class="hljs-keyword">as</span> statsmodels
+<span class="hljs-keyword">from</span> statsmodels.formula.api <span class="hljs-keyword">import</span> ols
+<span class="hljs-keyword">from</span> scipy <span class="hljs-keyword">import</span> stats
+<span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
+<span class="hljs-keyword">from</span> pathlib <span class="hljs-keyword">import</span> Path
+<span class="hljs-keyword">from</span> statsmodels.stats.multicomp <span class="hljs-keyword">import</span> MultiComparison
+<span class="hljs-keyword">from</span> statsmodels.sandbox.stats.multicomp <span class="hljs-keyword">import</span> tukeyhsd
+<span class="hljs-keyword">from</span> pathlib <span class="hljs-keyword">import</span> Path
+
+<span class="hljs-string">"""Excercise 2
+Zinc contamination
+"""</span>
+
+data = pd.read_table(Path.cwd() / <span class="hljs-string">"Practical2/contamination.txt"</span>, sep=<span class="hljs-string">' '</span>)
+print(data.head())
+
+<span class="hljs-comment"># Make box plot</span>
+data.boxplot(column=<span class="hljs-string">"DIVERSITY"</span>, by=<span class="hljs-string">"ZINC"</span>)
+print(<span class="hljs-string">"See boxplot in graphs folder"</span>)
+plt.savefig(Path.cwd() / <span class="hljs-string">"Practical2/graphs/boxplot_ex2.png"</span>)
+
+<span class="hljs-comment"># h0 = group means are all equal</span>
+mod = ols(<span class="hljs-string">"DIVERSITY ~ ZINC"</span>, data=data).fit()
+results = sm.stats.anova.anova_lm(mod)
+print(<span class="hljs-string">"ANOVA TABLE for diversity versus zinc level groups"</span>)
+print(results)
+
+print(<span class="hljs-string">"P is below alpha of 0.05. So reject null hypothesis. The means are not equal."</span>)
+
+<span class="hljs-comment"># Perform post hoc test</span>
+print(<span class="hljs-string">"Performing post hoc test..."</span>)
+mc = MultiComparison(data[<span class="hljs-string">"DIVERSITY"</span>], data[<span class="hljs-string">"ZINC"</span>])
+print(mc.tukeyhsd())
+print(<span class="hljs-string">"Can conclude that group2 with LOW zinc contamination is the group with a significantly different mean"</span>)
+</div></code></pre>
+<h4 id="output-4">output</h4>
+<pre><code><div>  STREAM  ZINC  DIVERSITY
+0  Eagle  BACK       2.27
+1  Eagle  HIGH       1.25
+2  Eagle  HIGH       1.15
+3  Eagle   MED       1.62
+4   Blue  BACK       1.70
+See boxplot in graphs folder
+ANOVA TABLE for diversity versus zinc level groups
+            df    sum_sq   mean_sq        F   PR(&gt;F)
+ZINC       3.0  2.566612  0.855537  3.93869  0.01756
+Residual  30.0  6.516411  0.217214      NaN      NaN
+P is below alpha of 0.05. So reject null hypothesis. The means are not equal.
+Performing post hoc test...
+Multiple Comparison of Means - Tukey HSD, FWER=0.05
+===================================================
+group1 group2 meandiff p-adj   lower  upper  reject
+---------------------------------------------------
+  BACK   HIGH  -0.5197 0.1221 -1.1355  0.096  False
+  BACK    LOW    0.235 0.7239 -0.3986 0.8686  False
+  BACK    MED  -0.0797    0.9 -0.6955  0.536  False
+  HIGH    LOW   0.7547 0.0117   0.139 1.3705   True
+  HIGH    MED     0.44 0.2096 -0.1574 1.0374  False
+   LOW    MED  -0.3147 0.5139 -0.9305  0.301  False
+---------------------------------------------------
+Can conclude that group2 with LOW zinc contamination is the group with a significantly different mean
+</div></code></pre>
+<h4 id="graphs-3">Graphs</h4>
+<p><img src="file:////home/jacob/projects/BIST_SDA_Practicals/Practical2/graphs/boxplot_ex2.png" alt=""></p>
+<h3 id="excercise-3-1">Excercise 3</h3>
+<h4 id="code-5">Code</h4>
+<pre><code class="language-python"><div><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-keyword">import</span> statsmodels <span class="hljs-keyword">as</span> sm
+<span class="hljs-keyword">import</span> statsmodels.api <span class="hljs-keyword">as</span> statsmodels
+<span class="hljs-keyword">from</span> statsmodels.formula.api <span class="hljs-keyword">import</span> ols
+<span class="hljs-keyword">from</span> scipy <span class="hljs-keyword">import</span> stats
+<span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
+<span class="hljs-keyword">from</span> pathlib <span class="hljs-keyword">import</span> Path
+<span class="hljs-keyword">from</span> statsmodels.stats.multicomp <span class="hljs-keyword">import</span> MultiComparison
+<span class="hljs-keyword">from</span> statsmodels.sandbox.stats.multicomp <span class="hljs-keyword">import</span> tukeyhsd
+<span class="hljs-keyword">import</span> math
+
+<span class="hljs-string">"""Excercise 3
+Confidence intervals
+"""</span>
+data = pd.read_table(Path.cwd() / <span class="hljs-string">"Practical2/fertilizer.txt"</span>, delim_whitespace = <span class="hljs-literal">True</span>)
+stats = data.groupby(<span class="hljs-string">"fertilizer"</span>).agg([<span class="hljs-string">"mean"</span>, <span class="hljs-string">"count"</span>, <span class="hljs-string">"std"</span>])
+
+ci95_hi = []
+ci95_lo = []
+
+<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> stats.index:
+    m, c, s = stats.loc[i]
+    ci95_hi.append(m + <span class="hljs-number">1.96</span>*s/math.sqrt(c))
+    ci95_lo.append(m - <span class="hljs-number">1.96</span>*s/math.sqrt(c))
+
+stats[<span class="hljs-string">'ci95_hi'</span>] = ci95_hi
+stats[<span class="hljs-string">'ci95_lo'</span>] = ci95_lo
+print(stats[[<span class="hljs-string">"ci95_hi"</span>, <span class="hljs-string">"ci95_lo"</span>]])
+</div></code></pre>
+<h4 id="output-5">Output</h4>
+<pre><code><div>              ci95_hi   ci95_lo
+                               
+fertilizer                     
+fertilizer1  6.049919  4.840081
+fertilizer2  4.601297  3.396703
+fertilizer3  5.091134  3.882866
+
+</div></code></pre>
+<h3 id="excercise-4">Excercise 4</h3>
+<pre><code class="language-python"><div><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-keyword">import</span> statsmodels <span class="hljs-keyword">as</span> sm
+<span class="hljs-keyword">import</span> statsmodels.api <span class="hljs-keyword">as</span> statsmodels
+<span class="hljs-keyword">from</span> statsmodels.formula.api <span class="hljs-keyword">import</span> ols
+<span class="hljs-keyword">from</span> scipy <span class="hljs-keyword">import</span> stats
+<span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
+<span class="hljs-keyword">from</span> pathlib <span class="hljs-keyword">import</span> Path
+<span class="hljs-keyword">from</span> statsmodels.stats.multicomp <span class="hljs-keyword">import</span> MultiComparison
+<span class="hljs-keyword">from</span> statsmodels.sandbox.stats.multicomp <span class="hljs-keyword">import</span> tukeyhsd
+<span class="hljs-keyword">import</span> math
+<span class="hljs-keyword">from</span> statsmodels.graphics.factorplots <span class="hljs-keyword">import</span> interaction_plot
+
+<span class="hljs-string">""""Ex 1 ANOVA 2 (ex 4, practical 2)
+Limpets ANOVA
+"""</span>
+
+<span class="hljs-comment"># Create the data </span>
+spring = [<span class="hljs-number">1.167</span>, <span class="hljs-number">0.5</span>, <span class="hljs-number">1.667</span>, <span class="hljs-number">1.5</span>, <span class="hljs-number">0.833</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0.667</span>, <span class="hljs-number">0.667</span>, <span class="hljs-number">0.75</span>]
+summer = [<span class="hljs-number">4</span>, <span class="hljs-number">3.83</span>, <span class="hljs-number">3.83</span>, <span class="hljs-number">3.33</span>, <span class="hljs-number">2.58</span>, <span class="hljs-number">2.75</span>, <span class="hljs-number">2.54</span>, <span class="hljs-number">1.83</span>, <span class="hljs-number">1.63</span>]
+density = [<span class="hljs-number">6</span>] * <span class="hljs-number">3</span> + [<span class="hljs-number">12</span>] * <span class="hljs-number">3</span> + [<span class="hljs-number">24</span>] * <span class="hljs-number">3</span>
+
+data = {
+    <span class="hljs-string">"DENSITY"</span>: density * <span class="hljs-number">2</span>,
+    <span class="hljs-string">"SEASON"</span>: [<span class="hljs-string">"SPRING"</span>] * len(spring) + [<span class="hljs-string">"SUMMER"</span>] * len(summer),
+    <span class="hljs-string">"EGGS"</span>: spring + summer
+}
+df = pd.DataFrame(data)
+df[<span class="hljs-string">"DENSITY"</span>] = df[<span class="hljs-string">"DENSITY"</span>].astype(object)
+
+<span class="hljs-comment"># Look at dispesion of eggs of each factor</span>
+df.boxplot(column=<span class="hljs-string">"EGGS"</span>, by=<span class="hljs-string">"DENSITY"</span>)
+print(<span class="hljs-string">"See graphs/ex4_boxplot_eggs_density.png"</span>)
+plt.savefig(Path.cwd() / <span class="hljs-string">"Practical2/graphs/ex4_boxplot_eggs_density.png"</span>)
+df.boxplot(column=<span class="hljs-string">"EGGS"</span>, by=<span class="hljs-string">"SEASON"</span>)
+print(<span class="hljs-string">"See graphs/ex4_boxplot_eggs_season.png"</span>)
+plt.savefig(Path.cwd() / <span class="hljs-string">"Practical2/graphs/ex4_boxplot_eggs_season.png"</span>)
+
+<span class="hljs-comment"># And together</span>
+df.boxplot(column=<span class="hljs-string">"EGGS"</span>, by=[<span class="hljs-string">"DENSITY"</span>, <span class="hljs-string">"SEASON"</span>])
+print(<span class="hljs-string">"See graphs/ex4_boxplot_eggs_density_season.png"</span>)
+plt.savefig(Path.cwd() / <span class="hljs-string">"Practical2/graphs/ex4_boxplot_eggs_density_season.png"</span>)
+
+<span class="hljs-comment"># Perform two way ANOVA</span>
+print(<span class="hljs-string">"Performing two way ANOVA"</span>)
+mod = ols(<span class="hljs-string">'EGGS ~ DENSITY + SEASON + DENSITY:SEASON'</span>, data = df).fit()
+print(sm.stats.anova.anova_lm(mod))
+print(<span class="hljs-string">"Both the density and season affect the eggs and there IS an interaction between the two factors."</span>)
+
+<span class="hljs-comment"># Create interaction plot</span>
+print(<span class="hljs-string">"Creating interaction plot"</span>)
+interaction_plot(df[<span class="hljs-string">'DENSITY'</span>], df[<span class="hljs-string">'SEASON'</span>], df[<span class="hljs-string">'EGGS'</span>])
+print(<span class="hljs-string">"See graphs/ex4_interaction_plot.png"</span>)
+plt.savefig(Path.cwd() / <span class="hljs-string">"Practical2/graphs/ex4_interaction_plot.png"</span>)
+
+print(<span class="hljs-string">"More eggs are laid during spring"</span>)
+print(<span class="hljs-string">"Lines are not parallel so an interaction occurs."</span>)
+</div></code></pre>
+<h3 id="output-6">Output</h3>
+<pre><code><div>See graphs/ex4_boxplot_eggs_density.png
+See graphs/ex4_boxplot_eggs_season.png
+See graphs/ex4_boxplot_eggs_density_season.png
+Performing two way ANOVA
+                  df     sum_sq    mean_sq           F        PR(&gt;F)
+DENSITY          2.0   4.001910   2.000955   13.984179  7.324696e-04
+SEASON           1.0  17.148320  17.148320  119.845363  1.335587e-07
+DENSITY:SEASON   2.0   1.690723   0.845362    5.908024  1.636324e-02
+Residual        12.0   1.717045   0.143087         NaN           NaN
+Both the density and season affect the eggs and there IS an interaction between the two factors.
+Creating interaction plot
+See graphs/ex4_interaction_plot.png
+More eggs are laid during spring
+Lines are not parallel so an interaction occurs.
+</div></code></pre>
+<h4 id="graphs-4">Graphs</h4>
+<p><img src="file:////home/jacob/projects/BIST_SDA_Practicals/Practical2/graphs/ex4_boxplot_eggs_density.png" alt="">
+<img src="file:////home/jacob/projects/BIST_SDA_Practicals/Practical2/graphs/ex4_boxplot_eggs_season.png" alt="">
+<img src="file:////home/jacob/projects/BIST_SDA_Practicals/Practical2/graphs/ex4_boxplot_eggs_density_season.png" alt="">
+Interaction plot
+<img src="file:////home/jacob/projects/BIST_SDA_Practicals/Practical2/graphs/ex4_interaction_plot.png" alt=""></p>
+<h2 id="practical-3">Practical 3</h2>
+<h3 id="excercise-1-2">Excercise 1</h3>
+<h4 id="code-6">Code</h4>
+<pre><code class="language-python"><div><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-keyword">import</span> statsmodels.api <span class="hljs-keyword">as</span> sm
+<span class="hljs-keyword">from</span> statsmodels.formula.api <span class="hljs-keyword">import</span> ols
+<span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
+<span class="hljs-keyword">import</span> seaborn <span class="hljs-keyword">as</span> sns <span class="hljs-comment"># statistical data visualization</span>
+<span class="hljs-keyword">from</span> scipy.stats <span class="hljs-keyword">import</span> pearsonr
+<span class="hljs-keyword">from</span> pathlib <span class="hljs-keyword">import</span> Path
+
+droso = pd.read_table(Path.cwd() / <span class="hljs-string">"Practical3/droso_survival.txt"</span>, delim_whitespace = <span class="hljs-literal">True</span>)
+droso_log = np.log(droso[[<span class="hljs-string">'size'</span>, <span class="hljs-string">'egg_rate'</span>, <span class="hljs-string">'longv'</span>]])
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">calc_residuals</span><span class="hljs-params">(var1, var2)</span>:</span>
+    print(<span class="hljs-string">f"Calculating residuals between <span class="hljs-subst">{var1}</span> and <span class="hljs-subst">{var2}</span>"</span>)
+    mod = ols(<span class="hljs-string">f"<span class="hljs-subst">{var1}</span>~<span class="hljs-subst">{var2}</span>"</span>, data=droso_log).fit()
+    <span class="hljs-keyword">return</span> mod.resid
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">pairwise</span><span class="hljs-params">(var1, var2)</span>:</span>
+    corr = pearsonr(droso_log[var1], droso_log[var2])
+    print(<span class="hljs-string">f"Pairwise correlation between <span class="hljs-subst">{var1}</span> and <span class="hljs-subst">{var2}</span>: <span class="hljs-subst">{corr}</span>"</span>)
+    <span class="hljs-keyword">return</span> corr
+
+<span class="hljs-comment"># Compute pairwise correlations</span>
+longv_size = pairwise(<span class="hljs-string">"longv"</span>, <span class="hljs-string">"size"</span>)
+longv_eggrate = pairwise(<span class="hljs-string">"longv"</span>, <span class="hljs-string">"egg_rate"</span>)
+size_eggrate = pairwise(<span class="hljs-string">"size"</span>, <span class="hljs-string">"egg_rate"</span>)
+
+<span class="hljs-comment"># Caluclate residuals of regrssion between survival and body size</span>
+resid1 = calc_residuals(<span class="hljs-string">"longv"</span>, <span class="hljs-string">"size"</span>)
+resid2 = calc_residuals(<span class="hljs-string">"egg_rate"</span>, <span class="hljs-string">"size"</span>)
+
+correlation = pearsonr(resid1, resid2)
+print(<span class="hljs-string">f"Correlation between residuals: <span class="hljs-subst">{correlation}</span>"</span>)
+print(<span class="hljs-string">"The above value indicates the partial correlation between the effect of longevity on size and the effect of egg_rate on size."</span>)
+print(<span class="hljs-string">"Given that the p value is two tailed. The p value for the lower tail is large so there is a low probability that the two are negatively partially correlated. However, there is a high probability that they are positively partially correlated."</span>)
+</div></code></pre>
+<h4 id="output-7">output</h4>
+<pre><code><div>Pairwise correlation between longv and size: (0.8283311342065418, 3.1849171441815143e-07)
+Pairwise correlation between longv and egg_rate: (0.449849448135042, 0.024054320056476213)
+Pairwise correlation between size and egg_rate: (0.7704626852133368, 6.6250867952798715e-06)
+Calculating residuals between longv and size
+Calculating residuals between egg_rate and size
+Correlation between residuals: (-0.5273750528566099, 0.00674732634080353)
+The above value indicates the partial correlation between the effect of longevity on size and the effect of egg_rate on size.
+Given that the p value is two tailed. The p value for the lower tail is large so there is a low probability that the two are negatively partially correlated. However, there is a high probability that they are positively partially correlated.
+
+</div></code></pre>
+
+    </body>
+    </html>
